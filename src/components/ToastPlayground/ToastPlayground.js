@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Button from '../Button';
 import ToastShelf from '../ToastShelf';
 
+import { ToastContext } from '../ToastProvider';
 import styles from './ToastPlayground.module.css';
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
@@ -10,7 +11,8 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const [toasts, setToasts] = React.useState([]);
+
+  const { createToast } = useContext(ToastContext);
 
   const radioButtons = VARIANT_OPTIONS.map((possibleVariant) => {
     const idToUse = `variant-${possibleVariant}`;
@@ -29,19 +31,13 @@ function ToastPlayground() {
     );
   });
 
-  const createToast = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
 
-    const id = Math.floor(Math.random() * 10000);
-    setToasts([...toasts, { id, message, variant }]);
+    createToast(message, variant);
 
     setMessage('');
     setVariant(VARIANT_OPTIONS[0]);
-  };
-
-  const removeToast = (id) => {
-    const newToasts = toasts.filter((toast) => toast.id !== id);
-    setToasts(newToasts);
   };
 
   return (
@@ -50,9 +46,9 @@ function ToastPlayground() {
         <img alt='Cute toast mascot' src='/toast.png' />
         <h1>Toast Playground</h1>
       </header>
-      <ToastShelf toasts={toasts} removeToast={removeToast}></ToastShelf>
+      <ToastShelf />
 
-      <form className={styles.controlsWrapper} onSubmit={createToast}>
+      <form className={styles.controlsWrapper} onSubmit={onFormSubmit}>
         <div className={styles.row}>
           <label htmlFor='message' className={styles.label} style={{ alignSelf: 'baseline' }}>
             Message
