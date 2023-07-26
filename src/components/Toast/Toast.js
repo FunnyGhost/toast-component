@@ -24,10 +24,16 @@ function Toast({ toast }) {
       <div className={styles.iconContainer}>
         <IconToUse size={24} />
       </div>
-      <p className={styles.content}>{toast.message}</p>
-      <button className={styles.closeButton} onClick={() => removeToast(toast.id)}>
+      <p className={styles.content}>
+        <VisuallyHidden>{toast.variant} - </VisuallyHidden>
+        {toast.message}
+      </p>
+      <button
+        className={styles.closeButton}
+        onClick={() => removeToast(toast.id)}
+        aria-label='Dismiss message'
+        aria-live='off'>
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );

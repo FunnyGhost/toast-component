@@ -15,7 +15,11 @@ function ToastShelf() {
     );
   });
 
-  return <ol className={styles.wrapper}>{toastElements}</ol>;
+  return (
+    <ol role='region' aria-live='polite' aria-label='Notification' className={styles.wrapper}>
+      {toastElements}
+    </ol>
+  );
 }
 
 export default ToastShelf;
