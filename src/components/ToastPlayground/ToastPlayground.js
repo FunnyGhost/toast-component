@@ -1,8 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import Button from '../Button';
 import ToastShelf from '../ToastShelf';
 
+import { useKeyPressed } from '../../hooks/useEscapeKey';
 import { ToastContext } from '../ToastProvider';
 import styles from './ToastPlayground.module.css';
 
@@ -14,19 +15,13 @@ function ToastPlayground() {
 
   const { createToast, clearToasts } = useContext(ToastContext);
 
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.code === 'Escape') {
-        clearToasts();
-      }
-    };
+  const [keyPressed, setKeyPressed] = useKeyPressed('Escape');
 
-    window.addEventListener('keydown', handleKeyPress);
+  React.useEffect(() => {
+    if (keyPressed) clearToasts();
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, []);
+    return () => setKeyPressed(false);
+  }, [keyPressed, clearToasts, setKeyPressed]);
 
   const radioButtons = VARIANT_OPTIONS.map((possibleVariant) => {
     const idToUse = `variant-${possibleVariant}`;
