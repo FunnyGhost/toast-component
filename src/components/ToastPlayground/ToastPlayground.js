@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import Button from '../Button';
 import ToastShelf from '../ToastShelf';
 
-import { useKeyPressed } from '../../hooks/useEscapeKey';
+import { useKeyPressed } from '../../hooks/useKeyPressed';
 import { ToastContext } from '../ToastProvider';
 import styles from './ToastPlayground.module.css';
 
