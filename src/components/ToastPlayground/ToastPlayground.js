@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import Button from '../Button';
 import ToastShelf from '../ToastShelf';
@@ -12,16 +12,9 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-
-  const { createToast, clearToasts } = useContext(ToastContext);
-
-  const [keyPressed, setKeyPressed] = useKeyPressed('Escape');
-
-  React.useEffect(() => {
-    if (keyPressed) clearToasts();
-
-    return () => setKeyPressed(false);
-  }, [keyPressed, clearToasts, setKeyPressed]);
+  const { createToast, clearToasts } = React.useContext(ToastContext);
+  const handleEscape = React.useCallback(() => clearToasts(), [clearToasts]);
+  useKeyPressed('Escape', handleEscape);
 
   const radioButtons = VARIANT_OPTIONS.map((possibleVariant) => {
     const idToUse = `variant-${possibleVariant}`;

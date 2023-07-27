@@ -1,14 +1,10 @@
 import React from 'react';
 
-export const useKeyPressed = (code) => {
-  const [keyPressed, setKeyPressed] = React.useState(false);
-
+export const useKeyPressed = (code, callback) => {
   React.useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.code === code) {
-        setKeyPressed(true);
-      } else {
-        setKeyPressed(false);
+        callback(event);
       }
     };
 
@@ -17,7 +13,5 @@ export const useKeyPressed = (code) => {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [code]);
-
-  return [keyPressed, setKeyPressed];
+  }, [code, callback]);
 };
